@@ -8,7 +8,7 @@
 </head>
 <body>
     <header>
-        <h1>Погодний дашборд</h1>
+        <img src="assets/img/Logo.svg" alt="Logo">
         <nav>
             <a href="#current">Поточна погода</a>
             <a href="#prognosis">Прогноз</a>
@@ -17,43 +17,57 @@
     <main>
         <section id="current">
             <h2>Поточна погода</h2>
-            <article>
-                <h3>Понеділок</h3>
-                <img src="assets/img/sunny.png" alt="Сонячно, без опадів" class="img">
-                <p>+21&deg;C, ясно</p>
-            </article>
+            <div class="currentwithaside">
+                <article>
+                    <div class="wether_with_data">
+                        <h3>Понеділок</h3>
+                        <div class="wether_info">
+                            <p>+21&deg;C, ясно</p>
+                            <img src="assets/img/sunny.png" alt="Сонячно, без опадів" class="img">
+                        </div>
+                    </div>
+                </article>
+                <div class="aside_backround">
+                    <aside>
+                        <h3>Що вдягнути?</h3>
+                    </aside>
+                </div>
+            </div>
         </section>
         <section id="prognosis">
             <h2>Прогноз</h2>
-            <article>
-                <h3>Вівторок</h3>
-                <p>+18&deg;C, хмарно</p>
-            </article>
-            <article>
-                <h3>Середа</h3>
-                <p>+10&deg;C, хмарно</p>
-            </article>
-            <article>
-                <h3>Четвер</h3>
-                <p>+21&deg;C, ясно</p>
-            </article>
-            <article>
-                <h3>П'ятниця</h3>
-                <p>+24&deg;C, ясно</p>
-            </article>
-            <article>
-                <h3>Субота</h3>
-                <p>+15&deg;C, хмарно</p>
-            </article>
-            <article>
-                <h3>Неділя</h3>
-                <p>+19&deg;C, хмарно</p>
-            </article>
+            <div class="cards">
+                <article>
+                    <h3>Понеділок</h3>
+                    <p>+21&deg;C, ясно</p>
+                </article>
+                <article>
+                    <h3>Вівторок</h3>
+                    <p>+18&deg;C, хмарно</p>
+                </article>
+                <article>
+                    <h3>Середа</h3>
+                    <p>+10&deg;C, хмарно</p>
+                </article>
+                <article>
+                    <h3>Четвер</h3>
+                    <p>+21&deg;C, ясно</p>
+                </article>
+                <article>
+                    <h3>П'ятниця</h3>
+                    <p>+24&deg;C, ясно</p>
+                </article>
+                <article>
+                    <h3>Субота</h3>
+                    <p>+15&deg;C, хмарно</p>
+                </article>
+                <article>
+                    <h3>Неділя</h3>
+                    <p>+19&deg;C, хмарно</p>
+                </article>
+            </div>
         </section>
     </main>
-    <aside>
-        <p>Що вдягнути?</p>
-    </aside>
     <footer>
         <p>Розробник: Рибачик Ілля. Проєкт розроблений для практичних занять з веб розробки. 2026 р.</p>
     </footer>
