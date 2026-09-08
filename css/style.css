@@ -9,11 +9,11 @@ body {
     font-family: system-ui, sans-serif;
     line-height: 1.5;
     color: #000;
-    background: #fff;
+    background: #224770;
 }
 
 header {
-    background: linear-gradient(135deg, #0045a5 0%, #070155 100%);
+    background: linear-gradient(135deg, #16365c 0%, #0a1829 100%);
     padding-left: 10px;
     padding-right: 10px;
     font-size: 1.5rem;
@@ -30,7 +30,8 @@ header img {
 }
 
 #current {
-    background: #2075ea;
+    background: #2E5A8C;
+    /* чітко задано технічним завданням */
     padding-bottom: 20px;
 }
 
@@ -38,22 +39,57 @@ article {
     padding: 16px;
     border-radius: 12px;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
-    min-width: 150px;
+    min-width: 155px;
+}
+
+.cards article {
+    align-items: center;
+    text-align: center;
+}
+
+article p {
+    font-size: 14px;
+}
+
+.cards article p {
+    font-size: 14px;
+    margin: 0px;
+}
+
+#current article p {
+    font-size: 14px;
 }
 
 aside {
-    padding: 16px 25px;
+    padding: 0px 25px;
     border-radius: 12px;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
     background: #fff;
     height: 100%;
 }
 
-aside h3 {
+aside h2 {
     background: #fff;
-    font-size: 1rem;
-    font-weight: 700;
+    font-size: 28px;
     text-align: center;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    margin: 0px;
+}
+
+article h3 {
+    font-size: 20px;
+    text-align: center;
+    margin: 0px;
+}
+
+article p {
+    text-align: center;
+}
+
+.cards article img {
+    width: 50px;
+    margin: 5px;
 }
 
 footer {
@@ -64,32 +100,55 @@ footer {
     text-align: center;
 }
 
-h2 {
+h1 {
     text-align: center;
     margin: 0px;
     padding: 20px 0px;
-    font-size: 1.5rem;
+    font-size: 36px;
+}
+
+#current h1 {
+    color: #fff;
+    /* контраст із фоном ≈ 7.1:1, WCAG AA пройдено */
+}
+
+span {
+    font-size: 32px;
+}
+
+#current article p {
+    color: #d80000;
+    /* #0000ff - blue */
+    /* #ff7b00 - orange */
+    /* #d80000 - red */
 }
 
 .img {
-    width: 40px;
+    max-width: 70px;
     margin-left: 20px;
+    padding: 7px 0px;
 }
 
 #current article {
-    font-size: 1rem;
-    font-weight: 700;
     border-radius: 0px;
     box-shadow: none;
-    background: #2075ea;
+    background: #2E5A8C;
+    /* чітко задано технічним завданням */
     flex: 0.5;
+    padding: 0px;
 }
 
 nav a {
-    color: #000;
+    color: #fff;
     font-weight: 400;
-    font-size: 1.5rem;
+    font-size: 20px;
     margin-left: 40px;
+    text-decoration: none;
+}
+
+nav a:hover {
+    color: #38bdf8;
+    transition: all 0.3s ease;
 }
 
 nav {
@@ -101,10 +160,19 @@ nav {
     margin: 0px 10px 40px 10px;
 }
 
+#prognosis h1 {
+    color: #fff;
+    /* контраст із фоном ≈ 9.53:1, WCAG AA пройдено */
+}
+
 .cards {
     display: grid;
     grid-template-columns: 1fr;
     gap: 16px;
+}
+
+.cards article {
+    background: #fff;
 }
 
 .currentwithaside {
@@ -120,36 +188,39 @@ nav {
     justify-content: start;
 }
 
+
+
 .wether_with_data {
-    padding: 16px 25px;
+    padding: 0px 25px;
     border-radius: 12px;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
     background: #ffffff;
 }
 
-.wether_with_data p {
-    padding-top: 5px;
-}
-
 .aside_backround {
     flex: 0.5;
-    padding: 16px;
+}
+
+#current article h2 {
+    font-size: 28px;
+    padding-top: 10px;
+    margin: 0px;
 }
 
 @media (min-width: 764px) {
     .cards {
         grid-template-columns: repeat(3, 1fr);
     }
-    
+
     header {
         padding-left: 50px;
         padding-right: 50px;
     }
-    
+
     #prognosis {
         margin: 0px 50px 40px 50px;
     }
-    
+
     .currentwithaside {
         margin: 0px 50px;
     }
@@ -158,20 +229,8 @@ nav {
         width: 270px;
     }
 
-    aside h3 {
-        font-size: 1.5rem;
-    }
-
-    #current article {
-        font-size: 1.5rem;
-    }
-    
-    .img {
-        width: 70px;
-    }
-
-    h2 {
-        font-size: 2.2rem;
+    aside h2 {
+        font-size: 28px;
     }
 }
 
@@ -184,11 +243,11 @@ nav {
         padding-left: 100px;
         padding-right: 100px;
     }
-    
+
     #prognosis {
         margin: 0px 100px 40px 100px;
     }
-    
+
     .currentwithaside {
         display: flex;
         flex-wrap: wrap;
