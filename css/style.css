@@ -255,4 +255,8 @@ nav {
         flex-direction: row;
         margin: 0px 100px;
     }
+
+    .cards article p span {
+        display: block;
+    }
 }
