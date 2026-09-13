@@ -23,6 +23,7 @@ header {
     align-items: center;
     flex-wrap: wrap;
     gap: 12px;
+    border-bottom: 1px solid #fff;
 }
 
 header img {
@@ -70,7 +71,7 @@ aside {
 
 aside h3 {
     background: #fff;
-    font-size: 28px;
+    font-size: 20px;
     text-align: center;
     padding-top: 10px;
     padding-bottom: 10px;
@@ -114,6 +115,7 @@ h2 {
 
 span {
     font-size: 32px;
+    font-weight: 500;
 }
 
 #current article p {
@@ -147,7 +149,7 @@ nav a {
 }
 
 nav a:hover {
-    color: #38bdf8;
+    color: #1d4ed8;
     transition: all 0.3s ease;
 }
 
@@ -157,7 +159,7 @@ nav {
 }
 
 #prognosis {
-    margin: 0px 10px 40px 10px;
+    margin: 0px 10px 20px 10px;
 }
 
 #prognosis h2 {
@@ -188,8 +190,6 @@ nav {
     justify-content: start;
 }
 
-
-
 .wether_with_data {
     padding: 0px 25px;
     border-radius: 12px;
@@ -202,7 +202,7 @@ nav {
 }
 
 #current article h3 {
-    font-size: 28px;
+    font-size: 20px;
     padding-top: 10px;
     margin: 0px;
 }
@@ -218,6 +218,93 @@ nav {
     border: 0;
 }
 
+.management-section {
+    padding: 0px 10px 20px 10px;
+    margin: 0 auto;
+    background: #2E5A8C;
+    /* #224770 */
+    /* #2E5A8C */
+    /* #193658 */
+}
+
+.management-section h2 {
+    color: #fff;
+    text-align: center;
+    font-size: 36px;
+}
+
+.management-container {
+    flex-direction: column;
+    display: flex;
+    gap: 30px;
+    justify-content: space-between;
+}
+
+.weather-form,
+.analytics-box {
+    background-color: #fff;
+    border-radius: 15px;
+    padding: 25px;
+    flex: 1;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.weather-form h3,
+.analytics-box h3 {
+    margin-top: 0;
+    color: #1e3a8a;
+    font-size: 20px;
+    margin-bottom: 20px;
+}
+
+.form-group {
+    margin-bottom: 15px;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.form-group label {
+    font-weight: bold;
+    color: #333;
+}
+
+.form-group input {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    font-size: 1rem;
+}
+
+.btn-submit,
+.btn-action {
+    background-color: #1e3a8a;
+    color: white;
+    border: none;
+    padding: 12px 20px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: bold;
+    width: 100%;
+    transition: background 0.2s;
+}
+
+.btn-submit:hover,
+.btn-action:hover {
+    background-color: #1d4ed8;
+}
+
+.result-text {
+    margin-top: 20px;
+    padding: 15px;
+    background-color: #f3f4f6;
+    border-radius: 8px;
+    color: #374151;
+    font-weight: 500;
+    text-align: center;
+}
+
 @media (min-width: 764px) {
     .cards {
         grid-template-columns: repeat(3, 1fr);
@@ -229,7 +316,12 @@ nav {
     }
 
     #prognosis {
-        margin: 0px 50px 40px 50px;
+        margin: 0px 50px 20px 50px;
+    }
+
+    .management-section {
+        padding: 0px 50px 20px 50px;
+        margin: 0 auto;
     }
 
     .currentwithaside {
@@ -241,7 +333,7 @@ nav {
     }
 
     aside h3 {
-        font-size: 28px;
+        font-size: 20px;
     }
 }
 
@@ -256,7 +348,12 @@ nav {
     }
 
     #prognosis {
-        margin: 0px 100px 40px 100px;
+        margin: 0px 100px 20px 100px;
+    }
+
+    .management-section {
+        padding: 0px 100px 20px 100px;
+        margin: 0 auto;
     }
 
     .currentwithaside {
@@ -267,7 +364,20 @@ nav {
         margin: 0px 100px;
     }
 
+    .cards article p {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+    }
+
     .cards article p span {
-        display: block;
+        display: inline-block;
+        font-size: 28px;
+        line-height: 1.2;
+    }
+
+    .management-container {
+        flex-direction: row;
     }
 }

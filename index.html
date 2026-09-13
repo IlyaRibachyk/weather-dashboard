@@ -13,6 +13,7 @@
         <nav>
             <a href="#current">Поточна погода</a>
             <a href="#prognosis">Прогноз</a>
+            <a href="#management-section">Керування даними</a>
         </nav>
     </header>
     <main>
@@ -73,6 +74,32 @@
                     <img src="assets/img/sunny.png" alt="Сонячно, без опадів">
                     <p><span>+19&deg;C,</span> хмарно</p>
                 </article>
+            </div>
+        </section>
+        <section id="management-section" class="management-section">
+            <h2>Керування даними</h2>
+            <div class="management-container">
+                <form id="weather-form" class="weather-form">
+                    <h3>Додати новий день</h3>
+                    <div class="form-group">
+                        <label for="day-input">День тижня:</label>
+                        <input type="text" id="day-input" placeholder="Наприклад, Пн, Вт" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="temp-input">Температура (°C):</label>
+                        <input type="number" id="temp-input" placeholder="Від -50 до 50" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="desc-input">Опис погоди:</label>
+                        <input type="text" id="desc-input" placeholder="Наприклад, ясно, дощ, хмарно">
+                    </div>
+                    <button type="submit" class="btn-submit">Додати в прогноз</button>
+                </form>
+                <div class="analytics-box">
+                    <h3>Аналітика погоди</h3>
+                    <button id="find-warmest-btn" class="btn-action">Найтепліший день</button>
+                    <p id="warmest-day-result" class="result-text">Результат з'явиться тут після кліку</p>
+                </div>
             </div>
         </section>
     </main>
