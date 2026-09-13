@@ -68,7 +68,7 @@ aside {
     height: 100%;
 }
 
-aside h2 {
+aside h3 {
     background: #fff;
     font-size: 28px;
     text-align: center;
@@ -77,7 +77,7 @@ aside h2 {
     margin: 0px;
 }
 
-.cards article h2 {
+.cards article h3 {
     font-size: 20px;
     text-align: center;
     margin: 0px;
@@ -100,14 +100,14 @@ footer {
     text-align: center;
 }
 
-h1 {
+h2 {
     text-align: center;
     margin: 0px;
     padding: 20px 0px;
     font-size: 36px;
 }
 
-#current h1 {
+#current h2 {
     color: #fff;
     /* контраст із фоном ≈ 7.1:1, WCAG AA пройдено */
 }
@@ -160,7 +160,7 @@ nav {
     margin: 0px 10px 40px 10px;
 }
 
-#prognosis h1 {
+#prognosis h2 {
     color: #fff;
     /* контраст із фоном ≈ 9.53:1, WCAG AA пройдено */
 }
@@ -201,10 +201,21 @@ nav {
     flex: 0.5;
 }
 
-#current article h2 {
+#current article h3 {
     font-size: 28px;
     padding-top: 10px;
     margin: 0px;
+}
+
+.visually-hidden {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    border: 0;
 }
 
 @media (min-width: 764px) {
@@ -229,7 +240,7 @@ nav {
         width: 270px;
     }
 
-    aside h2 {
+    aside h3 {
         font-size: 28px;
     }
 }

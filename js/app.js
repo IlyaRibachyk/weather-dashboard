@@ -35,7 +35,7 @@ function renderDays(days) {
     listContainer.innerHTML = '';
     days.forEach(day => {
         const card = document.createElement('article');
-        const title = document.createElement('h2');
+        const title = document.createElement('h3');
         const img = document.createElement('img');
         title.textContent = day.day;
         if (day.weather === 'sunny') {
