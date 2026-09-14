@@ -1,4 +1,4 @@
-console.log('script.js підключено')
+console.log('script.js підключено');
 const days = [
     { day: 'Пн', temp: 21, description: 'ясно', weather: 'sunny' },
     { day: 'Вт', temp: 18, description: 'хмарно', weather: 'cloudy' },
@@ -8,6 +8,24 @@ const days = [
     { day: 'Сб', temp: 15, description: 'хмарно', weather: 'cloudy' },
     { day: 'Нд', temp: 19, description: 'ясно', weather: 'sunny' }
 ]
+
+// константи weather codes
+const weatherCodes = {
+    0: { description: "ясно", weather: "sunny" },
+    1: { description: "переважно ясно", weather: "sunny" },
+    2: { description: "мінлива хмарність", weather: "cloudy" },
+    3: { description: "хмарно", weather: "cloudy" },
+    45: { description: "туман", weather: "cloudy" },
+    48: { description: "іній", weather: "cloudy" },
+    51: { description: "мряка", weather: "rain" },
+    61: { description: "невеликий дощ", weather: "rain" },
+    63: { description: "дощ", weather: "rain" },
+    71: { description: "сніг", weather: "rain" },
+    95: { description: "гроза", weather: "rain" }
+};
+
+// API
+const URL = "https://api.open-meteo.com/v1/forecast?latitude=50.45&longitude=30.52&current=temperature_2m,weather_code&timezone=auto";
 
 // Функція визначає текстову класифікацію погоди залежно від температури
 function feel(currentTempC) {
@@ -163,10 +181,75 @@ warmestBtn.addEventListener('click', () => {
   warmestResult.textContent = `Найтепліший день: ${warmest.day} (${warmest.temp}°C, ${warmest.description})`;
 });
 
-renderDays(days)
+const statusMessage = document.querySelector('#status-message');
+
+// Показує/ховає індикатор завантаження та блокує кнопку "Оновити" на час запиту
+function showLoading(isLoading) {
+    const refreshBtn = document.querySelector('#refresh-btn');
+    if (isLoading) {
+        statusMessage.textContent = 'Завантаження прогнозу погоди...';
+        statusMessage.style.color = 'blue';
+        if (refreshBtn) refreshBtn.disabled = true;
+    } else {
+        if (refreshBtn) refreshBtn.disabled = false;
+    }
+}
+
+// Виводить користувачу зрозуміле повідомлення про помилку (без технічних деталей)
+function showError(message) {
+    statusMessage.textContent = message;
+    statusMessage.style.color = 'red';
+}
+
+// Очищує попереднє повідомлення про статус перед новим запитом
+function clearStatus() {
+    statusMessage.textContent = '';
+}
+
+// Завантажує поточну погоду з Open-Meteo API (без ключа) і виводить її в DOM
+async function loadData() {
+    showLoading(true);
+    clearStatus();
+    try {
+        const response = await fetch(URL);
+        if (!response.ok) throw new Error(`Код ${response.status}`);
+        
+        const data = await response.json();
+        console.log("Отримані дані від API:", data);
+
+        const currentTemp = data.current.temperature_2m;
+        const code = data.current.weather_code;
+        const rawTime = data.current.time;
+        
+        const formattedTime = rawTime.replace('T', ' ');
+        const weatherDetail = weatherCodes[code] || { description: "хмарно", weather: "cloudy" };
+        const apiWeatherData = [{
+            day: `Зараз (${formattedTime})`,
+            temp: currentTemp,
+            description: weatherDetail.description,
+            weather: weatherDetail.weather
+        }];
+
+        renderDays(apiWeatherData);
+    } catch (error) {
+        showError('Не вдалося отримати прогноз погоди');
+        console.error("Деталі помилки:", error);
+    } finally {
+        showLoading(false);
+    }
+}
+
+const refreshBtn = document.querySelector('#refresh-btn');
+if (refreshBtn) {
+    refreshBtn.addEventListener('click', loadData);
+}
+
+loadData();
+
+renderDays(days);
 
 let average = 0;
 for (const day of days) {
     average += day.temp;
 }
-console.log(`Середнє значення: ${average / days.length}`)
+console.log(`Середнє значення: ${average / days.length}`);
