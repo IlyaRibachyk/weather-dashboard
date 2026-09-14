@@ -305,6 +305,17 @@ nav {
     text-align: center;
 }
 
+#refresh-btn {
+    margin-bottom: 20px;
+    padding: 10px 20px;
+    cursor: pointer;
+}
+
+#status-message {
+    margin-bottom: 15px;
+    font-weight: bold;
+}
+
 @media (min-width: 764px) {
     .cards {
         grid-template-columns: repeat(3, 1fr);
