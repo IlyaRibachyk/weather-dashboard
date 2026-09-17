@@ -42,44 +42,44 @@ function feel(currentTempC) {
 const toFahrenheit = celsius => celsius * 9 / 5 + 32;
 
 const staticCard = document.querySelector('#cards article');
-if (staticCard) {
-    staticCard.remove();
-}
+// if (staticCard) {
+//     staticCard.remove();
+// }
 
 const listContainer = document.querySelector('#cards')
 
 // Створює елемент article для кожного дня
-function renderDays(days) {
-    listContainer.innerHTML = '';
-    days.forEach(day => {
-        const card = document.createElement('article');
-        const title = document.createElement('h3');
-        const img = document.createElement('img');
-        title.textContent = day.day;
-        if (day.weather === 'sunny') {
-            img.src = 'assets/img/sunny.png';
-            img.alt = 'Сонячно, без опадів';
-        } else if (day.weather === 'cloudy') {
-            img.src = 'assets/img/cloud.webp';
-            img.alt = 'Хмарно, без опадів';
-        } else if (day.weather === 'rain') {
-            img.src = 'assets/img/rain.png';
-            img.alt = 'Хмарно, з опадами';
-        }
+// function renderDays(days) {
+//     listContainer.innerHTML = '';
+//     days.forEach(day => {
+//         const card = document.createElement('article');
+//         const title = document.createElement('h3');
+//         const img = document.createElement('img');
+//         title.textContent = day.day;
+//         if (day.weather === 'sunny') {
+//             img.src = 'assets/img/sunny.png';
+//             img.alt = 'Сонячно, без опадів';
+//         } else if (day.weather === 'cloudy') {
+//             img.src = 'assets/img/cloud.webp';
+//             img.alt = 'Хмарно, без опадів';
+//         } else if (day.weather === 'rain') {
+//             img.src = 'assets/img/rain.png';
+//             img.alt = 'Хмарно, з опадами';
+//         }
 
-        const description = document.createElement('p');
+//         const description = document.createElement('p');
 
-        const temperature = document.createElement('span');
-        temperature.textContent = `${day.temp}°C,`;
+//         const temperature = document.createElement('span');
+//         temperature.textContent = `${day.temp}°C,`;
 
-        if (day.temp < 0) description.classList.add('cold');
+//         if (day.temp < 0) description.classList.add('cold');
 
-        description.append(temperature, ` ${day.description}`);
+//         description.append(temperature, ` ${day.description}`);
 
-        card.append(title, img, description);
-        listContainer.append(card);
-    });
-}
+//         card.append(title, img, description);
+//         listContainer.append(card);
+//     });
+// }
 
 for (const day of days) {
     const status = feel(day.temp);
@@ -155,8 +155,11 @@ form.addEventListener('submit', (event) => {
         weather: weather
     };
 
-    days.push(newWeatherData);
-    renderDays(days);
+    // days.push(newWeatherData);
+    // renderDays(days);
+    if (window.updateWeatherCards) {
+        window.updateWeatherCards(prevItems => [...prevItems, newWeatherData]);
+    }
     
     form.reset();
 });
@@ -230,7 +233,10 @@ async function loadData() {
             weather: weatherDetail.weather
         }];
 
-        renderDays(apiWeatherData);
+        // renderDays(apiWeatherData);
+        if (window.updateWeatherCards) {
+            window.updateWeatherCards(apiWeatherData);
+        }
     } catch (error) {
         showError('Не вдалося отримати прогноз погоди');
         console.error("Деталі помилки:", error);
@@ -246,7 +252,7 @@ if (refreshBtn) {
 
 loadData();
 
-renderDays(days);
+// renderDays(days);
 
 let average = 0;
 for (const day of days) {
