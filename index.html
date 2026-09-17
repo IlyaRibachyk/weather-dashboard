@@ -39,7 +39,8 @@
         <section id="prognosis">
             <h2>Прогноз</h2>
             <div class="cards" id="cards">
-                <article>
+                <!-- Рендер списку прогнозу тепер повністю на React-компоненті WeatherCard -->
+                <!-- <article>
                     <h2>Понеділок</h2>
                     <img src="assets/img/sunny.png" alt="Сонячно, без опадів">
                     <p><span>+21&deg;C,</span> ясно</p>
@@ -73,7 +74,7 @@
                     <h2>Неділя</h2>
                     <img src="assets/img/sunny.png" alt="Сонячно, без опадів">
                     <p><span>+19&deg;C,</span> хмарно</p>
-                </article>
+                </article> -->
             </div>
             <div id="status-message"></div>
             <button id="refresh-btn" class="btn-action">Оновити прогноз погоди</button>
@@ -108,6 +109,10 @@
     <footer>
         <p>Розробник: Рибачик Ілля. Проєкт розроблений для практичних занять з веб розробки. 2026 р.</p>
     </footer>
+    <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
     <script src="js/app.js" defer></script>
+    <script type="text/babel" src="js/app.jsx"></script>
 </body>
 </html>
