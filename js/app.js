@@ -12,16 +12,16 @@ const days = [
 // константи weather codes
 const weatherCodes = {
     0: { description: "ясно", weather: "sunny" },
-    1: { description: "переважно ясно", weather: "sunny" },
-    2: { description: "мінлива хмарність", weather: "cloudy" },
+    1: { description: "ясно", weather: "sunny" },
+    2: { description: "хмарно", weather: "cloudy" },
     3: { description: "хмарно", weather: "cloudy" },
-    45: { description: "туман", weather: "cloudy" },
-    48: { description: "іній", weather: "cloudy" },
-    51: { description: "мряка", weather: "rain" },
-    61: { description: "невеликий дощ", weather: "rain" },
+    45: { description: "хмарно", weather: "cloudy" },
+    48: { description: "дощ", weather: "cloudy" },
+    51: { description: "дощ", weather: "rain" },
+    61: { description: "дощ", weather: "rain" },
     63: { description: "дощ", weather: "rain" },
-    71: { description: "сніг", weather: "rain" },
-    95: { description: "гроза", weather: "rain" }
+    71: { description: "дощ", weather: "rain" },
+    95: { description: "дощ", weather: "rain" }
 };
 
 // API
@@ -132,9 +132,10 @@ tempInput.addEventListener('input', () => {
 });
 
 // Обробка відправки форми та додавання нового дня
-form.addEventListener('submit', (event) => {
+form.addEventListener('submit', async (event) => {
     event.preventDefault();
 
+    const cityValue = document.querySelector('#city-input').value;
     const dayValue = document.querySelector('#day-input').value;
     const tempValue = Number(document.querySelector('#temp-input').value);
     const descValue = document.querySelector('#desc-input').value;
@@ -155,12 +156,31 @@ form.addEventListener('submit', (event) => {
         weather: weather
     };
 
-    // days.push(newWeatherData);
-    // renderDays(days);
+    // Як і раніше - додаємо день у React-стан карток
+    days.push(newWeatherData);
     if (window.updateWeatherCards) {
         window.updateWeatherCards(prevItems => [...prevItems, newWeatherData]);
     }
-    
+
+    // Нове (практикум 11) - зберігаємо місто в IndexedDB
+    const newCity = {
+        id: Date.now(),
+        name: cityValue,
+        lat: null,
+        lon: null,
+        temperature: tempValue,
+        weatherCode: null,
+        time: new Date().toISOString()
+    };
+
+    try {
+        await addCity(newCity);
+        const cities = await getAllCities();
+        console.log('Оновлений список збережених міст:', cities);
+    } catch (error) {
+        console.error('Не вдалося зберегти місто в IndexedDB:', error);
+    }
+
     form.reset();
 });
 
@@ -259,3 +279,104 @@ for (const day of days) {
     average += day.temp;
 }
 console.log(`Середнє значення: ${average / days.length}`);
+
+// Модель одного збереженого міста
+// { id, name, lat, lon, temperature, weatherCode, time }
+function saveToLocalStorage(cities) {
+    localStorage.setItem('savedCities', JSON.stringify(cities));
+}
+
+function loadFromLocalStorage() {
+    try {
+        const raw = localStorage.getItem('savedCities');
+        return raw ? JSON.parse(raw) : [];
+    } catch (error) {
+        console.error('Пошкоджені дані в localStorage:', error);
+        return [];
+    }
+}
+
+// Створюємо базу CitiesDB з object store "cities"
+function openDB() {
+    return new Promise((resolve, reject) => {
+
+        // тимчасово для скріншота - навмисно викликаємо помилку
+        // reject(new Error('IndexedDB недоступна (тест)'));
+        // return;
+
+        const request = indexedDB.open('CitiesDB', 1);
+
+        request.onupgradeneeded = (event) => {
+            const db = event.target.result;
+            if (!db.objectStoreNames.contains('cities')) {
+                db.createObjectStore('cities', { keyPath: 'id' });
+            }
+        };
+
+        request.onsuccess = () => resolve(request.result);
+        request.onerror = () => reject(request.error);
+    });
+}
+
+// Додає нове місто або оновлює наявне
+async function addCity(city) {
+    const db = await openDB();
+    return new Promise((resolve, reject) => {
+        const tx = db.transaction('cities', 'readwrite');
+        tx.objectStore('cities').put(city);
+        tx.oncomplete = () => resolve();
+        tx.onerror = () => reject(tx.error);
+    });
+}
+
+// Повертає всі збережені міста
+async function getAllCities() {
+    const db = await openDB();
+    return new Promise((resolve, reject) => {
+        const tx = db.transaction('cities', 'readonly');
+        const request = tx.objectStore('cities').getAll();
+        request.onsuccess = () => resolve(request.result);
+        request.onerror = () => reject(request.error);
+    });
+}
+
+// Видаляє місто за id
+async function deleteCity(id) {
+    const db = await openDB();
+    return new Promise((resolve, reject) => {
+        const tx = db.transaction('cities', 'readwrite');
+        tx.objectStore('cities').delete(id);
+        tx.oncomplete = () => resolve();
+        tx.onerror = () => reject(tx.error);
+    });
+}
+
+// Одноразово переносить дані зі старого localStorage в IndexedDB
+async function migrateFromLocalStorageIfNeeded() {
+    const alreadyMigrated = localStorage.getItem('citiesMigrated') === 'true';
+    if (alreadyMigrated) return;
+
+    const existing = await getAllCities();
+    if (existing.length > 0) {
+        localStorage.setItem('citiesMigrated', 'true');
+        return;
+    }
+
+    const oldCities = loadFromLocalStorage();
+    for (const city of oldCities) {
+        await addCity(city);
+    }
+    localStorage.setItem('citiesMigrated', 'true');
+}
+
+// виконує одноразову міграцію, а потім читає й виводить усі збережені міста
+(async () => {
+    try {
+        await migrateFromLocalStorageIfNeeded();
+        const cities = await getAllCities();
+        console.log('Збережені міста з IndexedDB:', cities);
+    } catch (error) {
+        showError('Не вдалося відкрити локальну базу даних. Перевірте, чи не увімкнено приватний режим перегляду.');
+        console.error(error);
+    }
+})();
