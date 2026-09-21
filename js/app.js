@@ -156,13 +156,11 @@ form.addEventListener('submit', async (event) => {
         weather: weather
     };
 
-    // Як і раніше - додаємо день у React-стан карток
     days.push(newWeatherData);
     if (window.updateWeatherCards) {
         window.updateWeatherCards(prevItems => [...prevItems, newWeatherData]);
     }
 
-    // Нове (практикум 11) - зберігаємо місто в IndexedDB
     const newCity = {
         id: Date.now(),
         name: cityValue,
