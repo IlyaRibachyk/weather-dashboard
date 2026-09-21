@@ -11,104 +11,112 @@
         <img src="assets/img/Logo.svg" alt="Logo">
         <h1 class="visually-hidden">Weather Dashboard - Застосунок погоди</h1>
         <nav>
-            <a href="#current">Поточна погода</a>
-            <a href="#prognosis">Прогноз</a>
+            <a href="#/" data-link>Поточна погода</a>
+            <a href="#/cities" data-link>Збережені міста</a>
             <a href="#management-section">Керування даними</a>
         </nav>
     </header>
     <main>
-        <section id="current">
-            <h2>Поточна погода</h2>
-            <div class="currentwithaside">
-                <article>
-                    <div class="wether_with_data">
-                        <h3>Понеділок</h3>
-                        <div class="wether_info">
-                            <p><span>+21&deg;C,</span> ясно</p>
-                            <img src="assets/img/sunny.png" alt="Сонячно, без опадів" class="img">
+        <div id="page-home">
+            <section id="current">
+                <h2>Поточна погода</h2>
+                <div class="currentwithaside">
+                    <article>
+                        <div class="wether_with_data">
+                            <h3>Понеділок</h3>
+                            <div class="wether_info">
+                                <p><span>+21&deg;C,</span> ясно</p>
+                                <img src="assets/img/sunny.png" alt="Сонячно, без опадів" class="img">
+                            </div>
                         </div>
+                    </article>
+                    <div class="aside_backround">
+                        <aside>
+                            <h3>Що вдягнути?</h3>
+                        </aside>
                     </div>
-                </article>
-                <div class="aside_backround">
-                    <aside>
-                        <h3>Що вдягнути?</h3>
-                    </aside>
                 </div>
-            </div>
-        </section>
-        <section id="prognosis">
-            <h2>Прогноз</h2>
-            <div class="cards" id="cards">
-                <!-- Рендер списку прогнозу тепер повністю на React-компоненті WeatherCard -->
-                <!-- <article>
-                    <h2>Понеділок</h2>
-                    <img src="assets/img/sunny.png" alt="Сонячно, без опадів">
-                    <p><span>+21&deg;C,</span> ясно</p>
-                </article>
-                <article>
-                    <h2>Вівторок</h2>
-                    <img src="assets/img/cloud.webp" alt="Хмарно, без опадів">
-                    <p><span>+18&deg;C,</span> хмарно</p>
-                </article>
-                <article>
-                    <h2>Середа</h2>
-                    <img src="assets/img/rain.png" alt="Хмарно, з опадами">
-                    <p><span>+10&deg;C,</span> хмарно</p>
-                </article>
-                <article>
-                    <h2>Четвер</h2>
-                    <img src="assets/img/sunny.png" alt="Сонячно, без опадів">
-                    <p><span>+21&deg;C,</span> ясно</p>
-                </article>
-                <article>
-                    <h2>П'ятниця</h2>
-                    <img src="assets/img/sunny.png" alt="Сонячно, без опадів">
-                    <p><span>+24&deg;C,</span> ясно</p>
-                </article>
-                <article>
-                    <h2>Субота</h2>
-                    <img src="assets/img/cloud.webp" alt="Хмарно, без опадів">
-                    <p><span>+15&deg;C,</span> хмарно</p>
-                </article>
-                <article>
-                    <h2>Неділя</h2>
-                    <img src="assets/img/sunny.png" alt="Сонячно, без опадів">
-                    <p><span>+19&deg;C,</span> хмарно</p>
-                </article> -->
-            </div>
-            <div id="status-message"></div>
-            <button id="refresh-btn" class="btn-action">Оновити прогноз погоди</button>
-        </section>
-        <section id="management-section" class="management-section">
-            <h2>Керування даними</h2>
-            <div class="management-container">
-                <form id="weather-form" class="weather-form">
-                    <h3>Додати новий день</h3>
-                    <div class="form-group">
-                        <label for="city-input">Місто:</label>
-                        <input type="text" id="city-input" placeholder="Наприклад, Київ" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="day-input">День тижня:</label>
-                        <input type="text" id="day-input" placeholder="Наприклад, Пн, Вт" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="temp-input">Температура (°C):</label>
-                        <input type="number" id="temp-input" placeholder="Від -50 до 50" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="desc-input">Опис погоди:</label>
-                        <input type="text" id="desc-input" placeholder="Наприклад, ясно, дощ, хмарно">
-                    </div>
-                    <button type="submit" class="btn-submit">Додати в прогноз</button>
-                </form>
-                <div class="analytics-box">
-                    <h3>Аналітика погоди</h3>
-                    <button id="find-warmest-btn" class="btn-action">Найтепліший день</button>
-                    <p id="warmest-day-result" class="result-text">Результат з'явиться тут після кліку</p>
+            </section>
+            <section id="prognosis">
+                <h2>Прогноз</h2>
+                <div class="cards" id="cards">
+                    <!-- Рендер списку прогнозу тепер повністю на React-компоненті WeatherCard -->
+                    <!-- <article>
+                        <h2>Понеділок</h2>
+                        <img src="assets/img/sunny.png" alt="Сонячно, без опадів">
+                        <p><span>+21&deg;C,</span> ясно</p>
+                    </article>
+                    <article>
+                        <h2>Вівторок</h2>
+                        <img src="assets/img/cloud.webp" alt="Хмарно, без опадів">
+                        <p><span>+18&deg;C,</span> хмарно</p>
+                    </article>
+                    <article>
+                        <h2>Середа</h2>
+                        <img src="assets/img/rain.png" alt="Хмарно, з опадами">
+                        <p><span>+10&deg;C,</span> хмарно</p>
+                    </article>
+                    <article>
+                        <h2>Четвер</h2>
+                        <img src="assets/img/sunny.png" alt="Сонячно, без опадів">
+                        <p><span>+21&deg;C,</span> ясно</p>
+                    </article>
+                    <article>
+                        <h2>П'ятниця</h2>
+                        <img src="assets/img/sunny.png" alt="Сонячно, без опадів">
+                        <p><span>+24&deg;C,</span> ясно</p>
+                    </article>
+                    <article>
+                        <h2>Субота</h2>
+                        <img src="assets/img/cloud.webp" alt="Хмарно, без опадів">
+                        <p><span>+15&deg;C,</span> хмарно</p>
+                    </article>
+                    <article>
+                        <h2>Неділя</h2>
+                        <img src="assets/img/sunny.png" alt="Сонячно, без опадів">
+                        <p><span>+19&deg;C,</span> хмарно</p>
+                    </article> -->
                 </div>
-            </div>
-        </section>
+                <div id="status-message"></div>
+                <button id="refresh-btn" class="btn-action">Оновити прогноз погоди</button>
+            </section>
+            <section id="management-section" class="management-section">
+                <h2>Керування даними</h2>
+                <div class="management-container">
+                    <form id="weather-form" class="weather-form">
+                        <h3>Додати новий день</h3>
+                        <div class="form-group">
+                            <label for="city-input">Місто:</label>
+                            <input type="text" id="city-input" placeholder="Наприклад, Київ" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="day-input">День тижня:</label>
+                            <input type="text" id="day-input" placeholder="Наприклад, Пн, Вт" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="temp-input">Температура (°C):</label>
+                            <input type="number" id="temp-input" placeholder="Від -50 до 50" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="desc-input">Опис погоди:</label>
+                            <input type="text" id="desc-input" placeholder="Наприклад, ясно, дощ, хмарно">
+                        </div>
+                        <button type="submit" class="btn-submit">Додати в прогноз</button>
+                    </form>
+                    <div class="analytics-box">
+                        <h3>Аналітика погоди</h3>
+                        <button id="find-warmest-btn" class="btn-action">Найтепліший день</button>
+                        <p id="warmest-day-result" class="result-text">Результат з'явиться тут після кліку</p>
+                    </div>
+                </div>
+            </section>
+        </div>
+        <div id="page-cities-list" style="display:none"></div>
+        <div id="page-city-detail" style="display:none"></div>
+        <div id="page-not-found" style="display:none">
+            <h2>Сторінку не знайдено</h2>
+            <a href="#/" data-link>← На головну</a>
+        </div>
     </main>
     <footer>
         <p>Розробник: Рибачик Ілля. Проєкт розроблений для практичних занять з веб розробки. 2026 р.</p>

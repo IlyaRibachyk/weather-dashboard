@@ -41,7 +41,7 @@ function feel(currentTempC) {
 // Стрілкова функція для переводу градусів Цельсія у Фаренгейти
 const toFahrenheit = celsius => celsius * 9 / 5 + 32;
 
-const staticCard = document.querySelector('#cards article');
+// const staticCard = document.querySelector('#cards article');
 // if (staticCard) {
 //     staticCard.remove();
 // }
@@ -49,37 +49,34 @@ const staticCard = document.querySelector('#cards article');
 const listContainer = document.querySelector('#cards')
 
 // Створює елемент article для кожного дня
-// function renderDays(days) {
-//     listContainer.innerHTML = '';
-//     days.forEach(day => {
-//         const card = document.createElement('article');
-//         const title = document.createElement('h3');
-//         const img = document.createElement('img');
-//         title.textContent = day.day;
-//         if (day.weather === 'sunny') {
-//             img.src = 'assets/img/sunny.png';
-//             img.alt = 'Сонячно, без опадів';
-//         } else if (day.weather === 'cloudy') {
-//             img.src = 'assets/img/cloud.webp';
-//             img.alt = 'Хмарно, без опадів';
-//         } else if (day.weather === 'rain') {
-//             img.src = 'assets/img/rain.png';
-//             img.alt = 'Хмарно, з опадами';
-//         }
+function renderDays(items, container) {
+    container.innerHTML = '';
+    items.forEach(item => {
+        const card = document.createElement('article');
+        const title = document.createElement('h3');
+        const img = document.createElement('img');
+        title.textContent = item.name ? `${item.name} — ${item.day}` : item.day;
 
-//         const description = document.createElement('p');
+        if (item.weather === 'sunny') {
+            img.src = 'assets/img/sunny.png';
+            img.alt = 'Сонячно, без опадів';
+        } else if (item.weather === 'cloudy') {
+            img.src = 'assets/img/cloud.webp';
+            img.alt = 'Хмарно, без опадів';
+        } else {
+            img.src = 'assets/img/rain.png';
+            img.alt = 'Хмарно, з опадами';
+        }
 
-//         const temperature = document.createElement('span');
-//         temperature.textContent = `${day.temp}°C,`;
+        const description = document.createElement('p');
+        const temperature = document.createElement('span');
+        temperature.textContent = `${item.temp}°C,`;
+        description.append(temperature, ` ${item.description}`);
 
-//         if (day.temp < 0) description.classList.add('cold');
-
-//         description.append(temperature, ` ${day.description}`);
-
-//         card.append(title, img, description);
-//         listContainer.append(card);
-//     });
-// }
+        card.append(title, img, description);
+        container.append(card);
+    });
+}
 
 for (const day of days) {
     const status = feel(day.temp);
@@ -156,27 +153,23 @@ form.addEventListener('submit', async (event) => {
         weather: weather
     };
 
-    // Як і раніше - додаємо день у React-стан карток
     days.push(newWeatherData);
     if (window.updateWeatherCards) {
         window.updateWeatherCards(prevItems => [...prevItems, newWeatherData]);
     }
 
-    // Нове (практикум 11) - зберігаємо місто в IndexedDB
     const newCity = {
         id: Date.now(),
         name: cityValue,
-        lat: null,
-        lon: null,
-        temperature: tempValue,
-        weatherCode: null,
+        day: dayValue,
+        temp: tempValue,
+        description: descValue,
+        weather: weather,
         time: new Date().toISOString()
     };
 
     try {
         await addCity(newCity);
-        const cities = await getAllCities();
-        console.log('Оновлений список збережених міст:', cities);
     } catch (error) {
         console.error('Не вдалося зберегти місто в IndexedDB:', error);
     }
@@ -253,7 +246,7 @@ async function loadData() {
             weather: weatherDetail.weather
         }];
 
-        // renderDays(apiWeatherData);
+        // renderDays(apiWeatherData, listContainer);
         if (window.updateWeatherCards) {
             window.updateWeatherCards(apiWeatherData);
         }
@@ -272,7 +265,7 @@ if (refreshBtn) {
 
 loadData();
 
-// renderDays(days);
+// renderDays(days, listContainer);
 
 let average = 0;
 for (const day of days) {
@@ -380,3 +373,107 @@ async function migrateFromLocalStorageIfNeeded() {
         console.error(error);
     }
 })();
+
+const routes = [
+    { path: '/', view: renderHome },
+    { path: '/cities', view: renderCitiesList },
+    { path: '/cities/:id', view: renderCityDetail }
+];
+
+function renderHome() {
+    showPage('page-home');
+}
+
+async function renderCitiesList() {
+    showPage('page-cities-list');
+    const container = document.getElementById('page-cities-list');
+    container.innerHTML = '<h2>Збережені міста</h2><ul id="cities-list-ul"></ul>';
+
+    const cities = await getAllCities();
+    const ul = document.getElementById('cities-list-ul');
+
+    if (cities.length === 0) {
+        ul.innerHTML = '<li>Ще немає збережених міст</li>';
+        return;
+    }
+
+    cities.forEach(city => {
+        const li = document.createElement('li');
+        const link = document.createElement('a');
+        link.href = `#/cities/${city.id}`;
+        link.setAttribute('data-link', '');
+        link.textContent = `${city.name} — ${city.day} (${city.temp}°C)`;
+        li.append(link);
+        ul.append(li);
+    });
+}
+
+// /cities/:id - бере вже збережені дані міста й показує через ту саму renderWeatherCards
+async function renderCityDetail(params) {
+    showPage('page-city-detail');
+    const container = document.getElementById('page-city-detail');
+
+    const cities = await getAllCities();
+    const city = cities.find(c => String(c.id) === params.id);
+
+    if (!city) {
+        container.innerHTML = '<p>Місто не знайдено.</p><a href="#/cities" data-link>← Назад до списку</a>';
+        return;
+    }
+
+    container.innerHTML = '<div id="city-detail-card"></div><a href="#/cities" data-link>← Назад до списку</a>';
+    renderDays([city], document.getElementById('city-detail-card'));
+}
+
+// Показує лише один контейнер-сторінку, ховаючи решту
+function showPage(id) {
+    const pageIds = ['page-home', 'page-cities-list', 'page-city-detail', 'page-not-found'];
+    pageIds.forEach(pid => {
+        const el = document.getElementById(pid);
+        if (el) el.style.display = pid === id ? '' : 'none';
+    });
+}
+
+// Зіставляє поточний шлях з одним із патернів у routes і витягує параметри
+function matchRoute(path) {
+    const pathParts = path.split('/').filter(Boolean);
+    for (const route of routes) {
+        const routeParts = route.path.split('/').filter(Boolean);
+        if (routeParts.length !== pathParts.length) continue;
+
+        const params = {};
+        const isMatch = routeParts.every((part, i) => {
+            if (part.startsWith(':')) {
+                params[part.slice(1)] = pathParts[i];
+                return true;
+            }
+            return part === pathParts[i];
+        });
+
+        if (isMatch) return { view: route.view, params };
+    }
+    return null;
+}
+
+// Головна функція роутера: визначає поточний шлях і викликає відповідну view
+function router() {
+    const path = location.hash.slice(1) || '/';
+    const match = matchRoute(path);
+
+    if (!match) {
+        showPage('page-not-found');
+        return;
+    }
+    match.view(match.params);
+}
+
+window.addEventListener('hashchange', router);
+window.addEventListener('DOMContentLoaded', router);
+
+// Перехоплюємо кліки по всіх посиланнях з data-link для клієнтської навігації
+document.addEventListener('click', (event) => {
+    const link = event.target.closest('a[data-link]');
+    if (!link) return;
+    event.preventDefault();
+    location.hash = link.getAttribute('href').replace('#', '');
+});
