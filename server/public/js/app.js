@@ -170,6 +170,8 @@ form.addEventListener('submit', async (event) => {
 
     try {
         await addCity(newCity);
+        const cities = await getAllCities();
+        renderSavedCities(cities);
     } catch (error) {
         console.error('Не вдалося зберегти місто в IndexedDB:', error);
     }
@@ -362,12 +364,11 @@ async function migrateFromLocalStorageIfNeeded() {
     localStorage.setItem('citiesMigrated', 'true');
 }
 
-// виконує одноразову міграцію, а потім читає й виводить усі збережені міста
 (async () => {
     try {
         await migrateFromLocalStorageIfNeeded();
         const cities = await getAllCities();
-        console.log('Збережені міста з IndexedDB:', cities);
+        renderSavedCities(cities); // додати цей рядок
     } catch (error) {
         showError('Не вдалося відкрити локальну базу даних. Перевірте, чи не увімкнено приватний режим перегляду.');
         console.error(error);
@@ -477,3 +478,64 @@ document.addEventListener('click', (event) => {
     event.preventDefault();
     location.hash = link.getAttribute('href').replace('#', '');
 });
+
+// Виводить список збережених міст у DOM з кнопкою видалення для кожного
+function renderSavedCities(cities) {
+    const list = document.querySelector('#saved-cities-list');
+    if (!list) return;
+
+    list.innerHTML = '';
+
+    if (cities.length === 0) {
+        const empty = document.createElement('li');
+        empty.textContent = 'Немає збережених міст';
+        list.append(empty);
+        return;
+    }
+
+    cities.forEach(city => {
+        const li = document.createElement('li');
+        const span = document.createElement('span');
+        const tempText = city.temperature != null ? `${city.temperature}°C` : '—';
+        span.textContent = `${city.name} (${tempText})`;
+
+        const btn = document.createElement('button');
+        btn.textContent = 'Видалити';
+        btn.className = 'delete-city-btn';
+        btn.addEventListener('click', async () => {
+            await deleteCity(city.id);
+            renderSavedCities(await getAllCities());
+        });
+
+        li.append(span, btn);
+        list.append(li);
+    });
+}
+
+// Завантажує список міст з локального сервера
+async function loadServerCities() {
+    try {
+        const response = await fetch('/api/cities');   // локальний URL
+        if (!response.ok) throw new Error(`Код ${response.status}`);
+
+        const cities = await response.json();
+        renderServerCities(cities);
+    } catch (error) {
+        showError('Не вдалося завантажити список міст із сервера');
+        console.error('Деталі помилки:', error);
+    }
+}
+
+function renderServerCities(cities) {
+    const list = document.querySelector('#server-cities-list');
+    if (!list) return;
+    list.innerHTML = '';
+
+    cities.forEach(city => {
+        const li = document.createElement('li');
+        li.textContent = `${city.name} (${city.lat}, ${city.lon})`;
+        list.append(li);
+    });
+}
+
+loadServerCities();
