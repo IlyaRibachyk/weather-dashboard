@@ -6,7 +6,8 @@ const PORT = 3000;
 
 // Локальні дані: 6 міст
 const cities = [
-    { id: 1, name: 'Київ',    lat: 50.45, lon: 30.52 },
+    { id: 1, name: 'Київ', lat: 50.45, lon: 30.52 },
+    // { id: 99, name: '<img src=x onerror="alert(\'XSS\')">', lat: 0, lon: 0 },
     { id: 2, name: 'Львів',   lat: 49.84, lon: 24.03 },
     { id: 3, name: 'Одеса',   lat: 46.48, lon: 30.72 },
     { id: 4, name: 'Харків',  lat: 49.99, lon: 36.23 },

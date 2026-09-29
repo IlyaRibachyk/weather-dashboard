@@ -496,7 +496,7 @@ function renderSavedCities(cities) {
     cities.forEach(city => {
         const li = document.createElement('li');
         const span = document.createElement('span');
-        const tempText = city.temperature != null ? `${city.temperature}°C` : '—';
+        const tempText = city.temp != null ? `${city.temp}°C` : '—';
         span.textContent = `${city.name} (${tempText})`;
 
         const btn = document.createElement('button');
@@ -526,11 +526,21 @@ async function loadServerCities() {
     }
 }
 
+// Небезпечно
+// function renderServerCities(cities) {
+//     const list = document.querySelector('#server-cities-list');
+//     list.innerHTML = '';
+//     cities.forEach(city => {
+//         const li = document.createElement('li');
+//         li.innerHTML = `${city.name} (${city.lat}, ${city.lon})`;
+//         list.append(li);
+//     });
+// }
+
+// Безпечно
 function renderServerCities(cities) {
     const list = document.querySelector('#server-cities-list');
-    if (!list) return;
     list.innerHTML = '';
-
     cities.forEach(city => {
         const li = document.createElement('li');
         li.textContent = `${city.name} (${city.lat}, ${city.lon})`;
