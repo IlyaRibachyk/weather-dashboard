@@ -37,6 +37,10 @@ app.use('/api', (req, res) => {
     res.status(404).json({ error: 'Не знайдено' });
 });
 
-app.listen(PORT, () => {
-    console.log(`Сервер запущено на http://localhost:${PORT}`);
-});
+if (process.env.NODE_ENV !== 'production') {
+    app.listen(PORT, () => {
+        console.log(`Сервер запущено на http://localhost:${PORT}`);
+    });
+}
+
+module.exports = app;

@@ -23,4 +23,4 @@
 
 ### HTTPS
 
-Розгортання на Vercel (HTTPS за замовчуванням).
+Розгортання на Vercel: https://weather-dashboard-two-snowy.vercel.app/
